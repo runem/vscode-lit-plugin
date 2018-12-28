@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TaggedHtml plugin contributions to tsconfig.json",
+    "type": "object",
+    "properties": {
+        "compilerOptions": {
+            "type": "object",
+            "properties": {
+                "plugins": {
+                    "type": "array",
+                    "items": {
+                        "if": {
+                            "properties": {
+                                "name": {
+                                    "enum": [
+                                        "ts-html-plugin"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "name"
+                            ]
+                        },
+                        "then": {
+                            "properties": {
+                                "tags": {
+                                    "type": "array",
+                                    "description": "List of template tags to enable html intellisense in.",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "Tag name."
+                                    },
+                                    "default": [
+                                        "html",
+                                        "raw"
+                                    ]
+                                },
+                                "externalTagNames": {
+                                    "type": "array",
+                                    "description": "List of external tag names.",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "Tag name."
+                                    }
+                                },
+                                "ignoreImports": {
+                                    "type": "boolean",
+                                    "description": "Choose to ignore custom element import errors in the html."
+                                },
+                                "flavor": {
+                                    "type": "string",
+                                    "description": "The flavor of html templating.",
+									"default": "lit-html",
+									"enum": [
+										"lit-html",
+										"vanilla"
+									]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

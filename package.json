@@ -1,0 +1,174 @@
+{
+    "name": "tagged-html",
+    "private": true,
+    "displayName": "Tagged HTML",
+    "description": "Syntax highlighting, type checking and code completion for html inside tagged template strings.",
+    "version": "0.0.7",
+    "publisher": "runem",
+    "icon": "documentation/logo.png",
+    "engines": {
+        "vscode": "^1.30.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "homepage": "https://github.com/runem/vscode-tagged-html",
+    "bugs": {
+        "url": "https://github.com/runem/vscode-tagged-html/issues",
+        "email": "runemehlsen@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/runem/vscode-tagged-html.git"
+    },
+    "main": "./out/extension",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "publish": "npm version patch && vsce publish"
+    },
+    "devDependencies": {
+        "typescript": "^3.2.0",
+        "vscode": "^1.1.25",
+        "tslint": "^5.8.0",
+        "@types/node": "^8.10.25",
+        "@types/mocha": "^2.2.42",
+        "vsce": "^1.53.2"
+    },
+    "dependencies": {
+        "ts-html-plugin": "^0.0.18"
+    },
+    "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescript",
+        "onLanguage:typescriptreact"
+    ],
+    "contributes": {
+        "configuration": [
+            {
+                "id": "tagged-html",
+                "title": "Tagged HTML",
+                "properties": {
+                    "tagged-html.tags": {
+                        "type": "array",
+                        "description": "List of template tags to enable html intellisense in.",
+                        "items": {
+                            "type": "string",
+                            "description": "Tag name."
+                        },
+                        "default": [
+                            "html",
+                            "raw"
+                        ]
+                    },
+                    "tagged-html.ignoreImports": {
+                        "type": "boolean",
+                        "description": "Enable/disable checking for missing imports in html.",
+                        "default": false
+                    },
+                    "tagged-html.flavor": {
+                        "type": "boolean",
+                        "description": "The name of the flavor used to validate htmll.",
+                        "default": "lit-html",
+                        "enum": [
+                            "vanilla",
+                            "lit-html"
+                        ]
+                    },
+                    "tagged-html.externalTagNames": {
+                        "type": "array",
+                        "description": "List of tag names that should be accepted as valid tag names.",
+                        "items": {
+                            "type": "string",
+                            "description": "Tag name."
+                        },
+                        "default": []
+                    }
+                }
+            }
+        ],
+        "typescriptServerPlugins": [
+            {
+                "name": "ts-html-plugin",
+                "enableForWorkspaceTypeScriptVersions": true
+            }
+        ],
+        "jsonValidation": [
+            {
+                "fileMatch": "jsconfig*.json",
+                "url": "./schemas/tsconfig.schema.json"
+            },
+            {
+                "fileMatch": "tsconfig*.json",
+                "url": "./schemas/tsconfig.schema.json"
+            }
+        ],
+        "grammars": [
+            {
+                "injectTo": [
+                    "source.js",
+                    "source.js.jsx",
+                    "source.jsx",
+                    "source.ts",
+                    "source.tsx",
+                    "text.html.basic"
+                ],
+                "scopeName": "inline.tagged-html",
+                "path": "./syntaxes/tagged-html.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.html": "html",
+                    "meta.embedded.block.css": "css",
+                    "source.css": "css"
+                }
+            },
+            {
+                "injectTo": [
+                    "source.js",
+                    "source.js.jsx",
+                    "source.jsx",
+                    "source.ts",
+                    "source.tsx",
+                    "text.html.basic"
+                ],
+                "scopeName": "inline.tagged-html.string.injection",
+                "path": "./syntaxes/tagged-html-string-injection.json",
+                "embeddedLanguages": {
+                    "meta.template.expression.ts": "typescript"
+                }
+            },
+            {
+                "injectTo": [
+                    "source.js",
+                    "source.js.jsx",
+                    "source.jsx",
+                    "source.ts",
+                    "source.tsx",
+                    "text.html.basic"
+                ],
+                "scopeName": "inline.tagged-html.style.injection",
+                "path": "./syntaxes/tagged-html-style-injection.json",
+                "embeddedLanguages": {
+                    "meta.template.expression.ts": "typescript"
+                }
+            },
+            {
+                "injectTo": [
+                    "source.js",
+                    "source.js.jsx",
+                    "source.jsx",
+                    "source.ts",
+                    "source.tsx",
+                    "text.html.basic"
+                ],
+                "scopeName": "inline.tagged-html-svg",
+                "path": "./syntaxes/tagged-html-svg.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.svg": "xml"
+                }
+            }
+        ]
+    }
+}

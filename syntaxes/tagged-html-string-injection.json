@@ -1,0 +1,11 @@
+{
+	"source": "https://github.com/mjbvz/vscode-lit-html",
+	"fileTypes": [],
+	"injectionSelector": "L:meta.embedded.block.html meta.tag",
+	"patterns": [
+		{
+			"include": "source.ts#template-substitution-element"
+		}
+	],
+	"scopeName": "inline.tagged-html.string.injection"
+}

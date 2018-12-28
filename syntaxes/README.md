@@ -1,0 +1,1 @@
+**Syntax files have been ported from https://github.com/mjbvz/vscode-lit-html**
