@@ -30,15 +30,14 @@
         "publish": "npm version patch && vsce publish"
     },
     "devDependencies": {
-        "typescript": "^3.2.0",
-        "vscode": "^1.1.25",
-        "tslint": "^5.8.0",
+        "typescript": "3.2.2",
+        "vscode": "1.1.26",
+        "tslint": "5.12.0",
         "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42",
-        "vsce": "^1.53.2"
+        "vsce": "1.54.0"
     },
     "dependencies": {
-        "ts-html-plugin": "^0.0.18"
+        "ts-html-plugin": "^0.0.19"
     },
     "activationEvents": [
         "onLanguage:javascript",
