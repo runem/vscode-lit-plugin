@@ -3,7 +3,7 @@
     "private": true,
     "displayName": "Tagged HTML",
     "description": "Syntax highlighting, type checking and code completion for html inside tagged template strings.",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "publisher": "runem",
     "icon": "documentation/logo.png",
     "engines": {
