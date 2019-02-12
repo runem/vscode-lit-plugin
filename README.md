@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/runem/ts-lit-plugin/master/documentation/asset/lit-plugin@256w.png" width="200">
 
-**Typescript plugin that adds type checking and code completion for [lit-html](https://github.com/polymer/lit-html).**
+**vscode plugin that adds syntax highlighting, type checking and code completion for [lit-html](https://github.com/polymer/lit-html).**
 
 [![](https://vsmarketplacebadge.apphb.com/version-short/runem.lit-plugin.svg)](https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin)
 [![](https://vsmarketplacebadge.apphb.com/downloads-short/runem.lit-plugin.svg)](https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin.svg)
