@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "TaggedHtml plugin contributions to tsconfig.json",
+    "title": "lit-plugin plugin contributions to tsconfig.json",
     "type": "object",
     "properties": {
         "compilerOptions": {
@@ -13,7 +13,7 @@
                             "properties": {
                                 "name": {
                                     "enum": [
-                                        "ts-html-plugin"
+                                        "ts-lit-plugin"
                                     ]
                                 }
                             },
@@ -23,38 +23,59 @@
                         },
                         "then": {
                             "properties": {
-                                "tags": {
+                                "disable": {
+                                    "type": "boolean",
+                                    "description": "Completely disable this plugin.",
+                                    "default": false
+                                },
+                                "format": {
+                                    "properties": {
+                                        "disable": {
+                                            "type": "boolean",
+                                            "description": "Disable formatting the HTML on code reformat.",
+                                            "default": false
+                                        }
+                                    }
+                                },
+                                "htmlTemplateTags": {
                                     "type": "array",
-                                    "description": "List of template tags to enable html intellisense in.",
+                                    "description": "List of template tags to enable html support in.",
                                     "items": {
                                         "type": "string",
-                                        "description": "Tag name."
+                                        "description": "Template tag function names."
                                     },
                                     "default": [
                                         "html",
                                         "raw"
                                     ]
                                 },
-                                "externalTagNames": {
+                                "externalHtmlTagNames": {
                                     "type": "array",
-                                    "description": "List of external tag names.",
+                                    "description": "List of html tag names that you expect to be present at all times. These tag names, including its attributes, are not checked at all.",
                                     "items": {
                                         "type": "string",
                                         "description": "Tag name."
                                     }
                                 },
-                                "ignoreImports": {
+                                "skipMissingImports": {
                                     "type": "boolean",
-                                    "description": "Choose to ignore custom element import errors in the html."
+                                    "description": "Skip reporting missing imports of custom elements.",
+                                    "default": false
                                 },
-                                "flavor": {
-                                    "type": "string",
-                                    "description": "The flavor of html templating.",
-									"default": "lit-html",
-									"enum": [
-										"lit-html",
-										"vanilla"
-									]
+                                "skipUnknownHtmlTags": {
+                                    "type": "boolean",
+                                    "description": "Skip reporting unknown html tags.",
+                                    "default": false
+                                },
+                                "skipUnknownHtmlAttributes": {
+                                    "type": "boolean",
+                                    "description": "Skip reporting unknown html attributes.",
+                                    "default": false
+                                },
+                                "skipTypeChecking": {
+                                    "type": "boolean",
+                                    "description": "Skip type checking of attributes.",
+                                    "default": false
                                 }
                             }
                         }

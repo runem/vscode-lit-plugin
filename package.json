@@ -1,25 +1,25 @@
 {
-    "name": "tagged-html",
+    "name": "lit-plugin",
     "private": true,
-    "displayName": "Tagged HTML",
-    "description": "Syntax highlighting, type checking and code completion for html inside tagged template strings.",
-    "version": "0.0.10",
+    "displayName": "lit-plugin",
+    "description": "Syntax highlighting, type checking and code completion for lit-html",
+    "version": "0.0.15",
     "publisher": "runem",
-    "icon": "documentation/logo.png",
+    "icon": "documentation/asset/lit-plugin@256w.png",
     "engines": {
         "vscode": "^1.30.0"
     },
     "categories": [
         "Programming Languages"
     ],
-    "homepage": "https://github.com/runem/vscode-tagged-html",
+    "homepage": "https://github.com/runem/vscode-lit-plugin",
     "bugs": {
-        "url": "https://github.com/runem/vscode-tagged-html/issues",
+        "url": "https://github.com/runem/ts-lit-plugin/issues",
         "email": "runemehlsen@gmail.com"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/runem/vscode-tagged-html.git"
+        "url": "https://github.com/runem/vscode-lit-plugin.git"
     },
     "main": "./out/extension",
     "scripts": {
@@ -27,17 +27,17 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "publish": "npm version patch && vsce publish"
+        "publish": "vsce publish"
     },
     "devDependencies": {
-        "typescript": "3.2.2",
-        "vscode": "1.1.26",
-        "tslint": "5.12.0",
-        "@types/node": "^8.10.25",
-        "vsce": "1.54.0"
+        "typescript": "3.3.3",
+        "vscode": "^1.1.29",
+        "tslint": "^5.12.1",
+        "@types/node": "^10.12.24",
+        "vsce": "^1.57.0"
     },
     "dependencies": {
-        "ts-html-plugin": "^0.0.21"
+        "ts-lit-plugin": "^0.0.28"
     },
     "activationEvents": [
         "onLanguage:javascript",
@@ -48,50 +48,65 @@
     "contributes": {
         "configuration": [
             {
-                "id": "tagged-html",
-                "title": "Tagged HTML",
+                "id": "lit-plugin",
+                "title": "lit-plugin",
                 "properties": {
-                    "tagged-html.tags": {
+                    "lit-plugin.disable": {
+                        "type": "boolean",
+                        "description": "Completely disable this plugin.",
+                        "default": false
+                    },
+                    "lit-plugin.format.disable": {
+                        "type": "boolean",
+                        "description": "Disable formatting the HTML on code reformat.",
+                        "default": false
+                    },
+                    "lit-plugin.htmlTemplateTags": {
                         "type": "array",
-                        "description": "List of template tags to enable html intellisense in.",
+                        "description": "List of template tags to enable html support in.",
                         "items": {
                             "type": "string",
-                            "description": "Tag name."
+                            "description": "Template tag function names."
                         },
                         "default": [
                             "html",
                             "raw"
                         ]
                     },
-                    "tagged-html.ignoreImports": {
-                        "type": "boolean",
-                        "description": "Enable/disable checking for missing imports in html.",
-                        "default": false
-                    },
-                    "tagged-html.flavor": {
-                        "type": "boolean",
-                        "description": "The name of the flavor used to validate htmll.",
-                        "default": "lit-html",
-                        "enum": [
-                            "vanilla",
-                            "lit-html"
-                        ]
-                    },
-                    "tagged-html.externalTagNames": {
+                    "lit-plugin.externalHtmlTagNames": {
                         "type": "array",
-                        "description": "List of tag names that should be accepted as valid tag names.",
+                        "description": "List of html tag names that you expect to be present at all times. These tag names, including its attributes, are not checked at all.",
                         "items": {
                             "type": "string",
                             "description": "Tag name."
-                        },
-                        "default": []
+                        }
+                    },
+                    "lit-plugin.skipMissingImports": {
+                        "type": "boolean",
+                        "description": "Skip reporting missing imports of custom elements.",
+                        "default": false
+                    },
+                    "lit-plugin.skipUnknownHtmlTags": {
+                        "type": "boolean",
+                        "description": "Skip reporting unknown html tags.",
+                        "default": false
+                    },
+                    "lit-plugin.skipUnknownHtmlAttributes": {
+                        "type": "boolean",
+                        "description": "Skip reporting unknown html attributes.",
+                        "default": false
+                    },
+                    "lit-plugin.skipTypeChecking": {
+                        "type": "boolean",
+                        "description": "Skip type checking of attributes.",
+                        "default": false
                     }
                 }
             }
         ],
         "typescriptServerPlugins": [
             {
-                "name": "ts-html-plugin",
+                "name": "ts-lit-plugin",
                 "enableForWorkspaceTypeScriptVersions": true
             }
         ],
@@ -115,8 +130,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.tagged-html",
-                "path": "./syntaxes/tagged-html.json",
+                "scopeName": "inline.lit-plugin",
+                "path": "./syntaxes/lit-plugin.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.html": "html",
                     "meta.embedded.block.css": "css",
@@ -132,8 +147,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.tagged-html.string.injection",
-                "path": "./syntaxes/tagged-html-string-injection.json",
+                "scopeName": "inline.lit-plugin.string.injection",
+                "path": "./syntaxes/lit-plugin-string-injection.json",
                 "embeddedLanguages": {
                     "meta.template.expression.ts": "typescript"
                 }
@@ -147,8 +162,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.tagged-html.style.injection",
-                "path": "./syntaxes/tagged-html-style-injection.json",
+                "scopeName": "inline.lit-plugin.style.injection",
+                "path": "./syntaxes/lit-plugin-style-injection.json",
                 "embeddedLanguages": {
                     "meta.template.expression.ts": "typescript"
                 }
@@ -162,8 +177,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.tagged-html-svg",
-                "path": "./syntaxes/tagged-html-svg.json",
+                "scopeName": "inline.lit-plugin-svg",
+                "path": "./syntaxes/lit-plugin-svg.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.svg": "xml"
                 }

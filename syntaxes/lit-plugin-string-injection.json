@@ -7,5 +7,5 @@
 			"include": "source.ts#template-substitution-element"
 		}
 	],
-	"scopeName": "inline.tagged-html.string.injection"
+	"scopeName": "inline.lit-plugin.string.injection"
 }

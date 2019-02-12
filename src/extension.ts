@@ -1,15 +1,19 @@
 import * as vscode from 'vscode';
 
-const taggedHtmlPluginId = 'ts-html-plugin';
+const tsLitPluginId = 'ts-lit-plugin';
 const typeScriptExtensionId = 'vscode.typescript-language-features';
-const configurationSection = 'tagged-html';
+const configurationSection = 'lit-plugin';
 
-interface IConfig {
+interface Config {
+    disable: boolean;
     verbose: boolean;
-    flavor: string;
-    tags: string[];
-    externalTagNames: string[];
-    ignoreImports: boolean;
+    format: { disable: boolean };
+    htmlTemplateTags: string[];
+    externalHtmlTagNames: string[];
+    skipMissingImports: boolean;
+    skipUnknownHtmlTags: boolean;
+    skipUnknownHtmlAttributes: boolean;
+    skipTypeChecking: boolean;
 }
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -39,18 +43,23 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 function synchronizeConfig(api: any) {
-    api.configurePlugin(taggedHtmlPluginId, getConfig());
+    api.configurePlugin(tsLitPluginId, getConfig());
 }
 
 
-function getConfig(): Partial<IConfig> {
+function getConfig(): Partial<Config> {
     const config = vscode.workspace.getConfiguration(configurationSection);
-    const outConfig: Partial<IConfig> = {};
+    const outConfig: Partial<Config> = {};
 
-    withConfigValue(config, "tags", value => { outConfig.tags = value; });
-    withConfigValue(config, "flavor", value => { outConfig.flavor = value; });
-    withConfigValue(config, "ignoreImports", value => { outConfig.ignoreImports = value; });
-    withConfigValue(config, "externalTagNames", value => { outConfig.externalTagNames = value; });
+    withConfigValue(config, "disable", value => { outConfig.disable = value; });
+    withConfigValue(config, "verbose", value => { outConfig.verbose = value; });
+    withConfigValue(config, "format.disable", value => { outConfig.format = Object.assign(outConfig.format || {}, {disable: value}); });
+    withConfigValue(config, "htmlTemplateTags", value => { outConfig.htmlTemplateTags = value; });
+    withConfigValue(config, "externalHtmlTagNames", value => { outConfig.externalHtmlTagNames = value; });
+    withConfigValue(config, "skipMissingImports", value => { outConfig.skipMissingImports = value; });
+    withConfigValue(config, "skipUnknownHtmlTags", value => { outConfig.skipUnknownHtmlTags = value; });
+    withConfigValue(config, "skipUnknownHtmlAttributes", value => { outConfig.skipUnknownHtmlAttributes = value; });
+    withConfigValue(config, "skipTypeChecking", value => { outConfig.skipTypeChecking = value; });
 
     return outConfig;
 }
@@ -69,6 +78,7 @@ function withConfigValue(config: vscode.WorkspaceConfiguration, key: string, wit
     }
 
     const value = config.get(key, undefined);
+
     if (typeof value !== 'undefined') {
         withValue(value);
     }

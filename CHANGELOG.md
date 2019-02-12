@@ -1,7 +1,19 @@
 # Change Log
-All notable changes to the "tagged-html" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-- Initial release
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+<!--
+   PRs should document their user-visible changes (if any) in the
+   Unreleased section, uncommenting the header as necessary.
+-->
+<!-- ### Added -->
+<!-- ### Changed -->
+<!-- ### Removed -->
+<!-- ### Fixed -->
+
+<!-- 
+## [0.0.12] - 2019-02-11
+-->
