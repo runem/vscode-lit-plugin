@@ -16,6 +16,7 @@ interface Config {
     skipTypeChecking: boolean;
 }
 
+
 export async function activate(context: vscode.ExtensionContext) {
 
     const extension = vscode.extensions.getExtension(typeScriptExtensionId);

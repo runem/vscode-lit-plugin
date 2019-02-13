@@ -27,17 +27,20 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "publish": "vsce publish"
+        "publish": "vsce publish",
+        "install:safe": "npm install --ignore-scripts && npm i # use this script in order to install directly from the github repositories"
     },
     "devDependencies": {
-        "typescript": "3.3.3",
-        "vscode": "^1.1.29",
-        "tslint": "^5.12.1",
         "@types/node": "^10.12.24",
-        "vsce": "^1.57.0"
+        "tslint": "^5.12.1",
+        "typescript": "3.3.3",
+        "vsce": "^1.57.0",
+        "vscode": "^1.1.29"
     },
     "dependencies": {
-        "ts-lit-plugin": "^0.0.28"
+        "ts-lit-plugin": "^0.0.28",
+        "vscode-styled-components": "https://github.com/styled-components/vscode-styled-components#f806f23a027e3458e9d77001851b428f1cb992d5",
+        "lit-html": "https://github.com/mjbvz/vscode-lit-html.git#1.11.0"
     },
     "activationEvents": [
         "onLanguage:javascript",
@@ -130,8 +133,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.lit-plugin",
-                "path": "./syntaxes/lit-plugin.json",
+                "scopeName": "inline.lit-html",
+                "path": "./node_modules/lit-html/syntaxes/lit-html.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.html": "html",
                     "meta.embedded.block.css": "css",
@@ -147,8 +150,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.lit-plugin.string.injection",
-                "path": "./syntaxes/lit-plugin-string-injection.json",
+                "scopeName": "inline.lit-html.string.injection",
+                "path": "./node_modules/lit-html/syntaxes/lit-html-string-injection.json",
                 "embeddedLanguages": {
                     "meta.template.expression.ts": "typescript"
                 }
@@ -162,8 +165,8 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.lit-plugin.style.injection",
-                "path": "./syntaxes/lit-plugin-style-injection.json",
+                "scopeName": "inline.lit-html.style.injection",
+                "path": "./node_modules/lit-html/syntaxes/lit-html-style-injection.json",
                 "embeddedLanguages": {
                     "meta.template.expression.ts": "typescript"
                 }
@@ -177,10 +180,29 @@
                     "source.tsx",
                     "text.html.basic"
                 ],
-                "scopeName": "inline.lit-plugin-svg",
-                "path": "./syntaxes/lit-plugin-svg.json",
+                "scopeName": "inline.lit-html-svg",
+                "path": "./node_modules/lit-html/syntaxes/lit-html-svg.json",
                 "embeddedLanguages": {
                     "meta.embedded.block.svg": "xml"
+                }
+            },
+            {
+                "scopeName": "source.css.styled",
+                "path": "./node_modules/vscode-styled-components/syntaxes/css.styled.json"
+            },
+            {
+                "injectTo": [
+                    "source.js",
+                    "source.ts",
+                    "source.jsx",
+                    "source.js.jsx",
+                    "source.tsx"
+                ],
+                "scopeName": "styled",
+                "path": "./node_modules/vscode-styled-components/syntaxes/styled-components.json",
+                "embeddedLanguages": {
+                    "source.css.scss": "css",
+                    "meta.embedded.line.ts": "typescript"
                 }
             }
         ]
