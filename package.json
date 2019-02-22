@@ -91,9 +91,28 @@
 							"raw"
 						]
 					},
-					"lit-plugin.externalHtmlTagNames": {
+					"lit-plugin.cssTemplateTags": {
 						"type": "array",
-						"description": "List of html tag names that you expect to be present at all times. These tag names, including its attributes, are not checked at all.",
+						"description": "List of template tags to enable css support in.",
+						"items": {
+							"type": "string",
+							"description": "Template tag function names."
+						},
+						"default": [
+							"css"
+						]
+					},
+					"lit-plugin.globalHtmlTags": {
+						"type": "array",
+						"description": "List of html tag names that you expect to be present at all times.",
+						"items": {
+							"type": "string",
+							"description": "Tag name."
+						}
+					},
+					"lit-plugin.globalHtmlAttributes": {
+						"type": "array",
+						"description": "List of html attributes names that you expect to be present at all times. These attributes are not checked at all.",
 						"items": {
 							"type": "string",
 							"description": "Tag name."

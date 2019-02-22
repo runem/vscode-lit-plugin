@@ -9,7 +9,9 @@ interface Config {
 	verbose: boolean;
 	format: { disable: boolean };
 	htmlTemplateTags: string[];
-	externalHtmlTagNames: string[];
+	cssTemplateTags: string[];
+	globalHtmlTags: string[];
+	globalHtmlAttributes: string[];
 	skipMissingImports: boolean;
 	skipUnknownHtmlTags: boolean;
 	skipUnknownHtmlAttributes: boolean;
@@ -65,8 +67,18 @@ function getConfig(): Partial<Config> {
 	withConfigValue(config, "htmlTemplateTags", value => {
 		outConfig.htmlTemplateTags = value;
 	});
+	withConfigValue(config, "cssTemplateTags", value => {
+		outConfig.cssTemplateTags = value;
+	});
+	withConfigValue(config, "globalHtmlAttributes", value => {
+		outConfig.globalHtmlAttributes = value;
+	});
+	// "externalHtmlTagNames" is deprecated, but keep it for now
 	withConfigValue(config, "externalHtmlTagNames", value => {
-		outConfig.externalHtmlTagNames = value;
+		outConfig.globalHtmlTags = value;
+	});
+	withConfigValue(config, "globalHtmlTags", value => {
+		outConfig.globalHtmlTags = value;
 	});
 	withConfigValue(config, "skipMissingImports", value => {
 		outConfig.skipMissingImports = value;
