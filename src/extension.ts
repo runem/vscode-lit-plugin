@@ -1,10 +1,12 @@
 import { join } from "path";
 import * as vscode from "vscode";
+import { ColorProvider } from "./color-provider";
 
 const tsLitPluginId = "ts-lit-plugin";
 const typeScriptExtensionId = "vscode.typescript-language-features";
 const configurationSection = "lit-plugin";
 const configurationExperimentalHtmlSection = "html.experimental";
+const colorProvider = new ColorProvider();
 
 interface Config {
 	disable: boolean;
@@ -46,6 +48,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 
+
+	// Register a color provider
+	const registration = vscode.languages.registerColorProvider([{ scheme: "file", language: "typescript" }, { scheme: "file", language: "javascript" }], colorProvider);
+	context.subscriptions.push(registration)
+
 	vscode.workspace.onDidChangeConfiguration(
 		e => {
 			if (e.affectsConfiguration(configurationSection) || e.affectsConfiguration(configurationExperimentalHtmlSection)) {
@@ -58,6 +65,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	synchronizeConfig(api);
 }
+
 
 function synchronizeConfig(api: any) {
 	api.configurePlugin(tsLitPluginId, getConfig());
