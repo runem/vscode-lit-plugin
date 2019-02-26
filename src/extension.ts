@@ -61,6 +61,9 @@ function getConfig(): Partial<Config> {
 	withConfigValue(config, "verbose", value => {
 		outConfig.verbose = value;
 	});
+	withConfigValue(config, "logging", value => {
+		if (value === "verbose") outConfig.verbose = true;
+	});
 	withConfigValue(config, "format.disable", value => {
 		outConfig.format = Object.assign(outConfig.format || {}, { disable: value });
 	});
