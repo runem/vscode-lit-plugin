@@ -14,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 <!-- ### Removed -->
 <!-- ### Fixed -->
 
+## [0.1.3] - 2019-03-12
+
+### Removed
+
+- Temporarily disabled code formatting because it had problems with nested html function calls. While I work on improving the formatter please use `prettier` if you want to format your html.
+
 ## [0.1.0] - 2019-02-22
 
 ### Added

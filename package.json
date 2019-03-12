@@ -28,6 +28,7 @@
 		"watch": "tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"publish": "vsce publish",
+		"package": "vsce package",
 		"install:safe": "npm install --ignore-scripts && npm i # use this script in order to install directly from the github repositories",
 		"prettier:check": "prettier --list-different '**/*.{js,jsx,md,json,css}'",
 		"prettier:write": "prettier --write '**/*.{js,jsx,md,json,css}'"
@@ -42,7 +43,7 @@
 		"pretty-quick": "^1.10.0"
 	},
 	"dependencies": {
-		"ts-lit-plugin": "^0.1.7",
+		"ts-lit-plugin": "^0.1.8",
 		"lit-html": "https://github.com/mjbvz/vscode-lit-html.git#1.11.0",
 		"vscode-styled-components": "https://github.com/styled-components/vscode-styled-components#f806f23a027e3458e9d77001851b428f1cb992d5"
 	},
