@@ -3,7 +3,7 @@
 	"private": true,
 	"displayName": "lit-plugin",
 	"description": "Syntax highlighting, type checking and code completion for lit-html",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"publisher": "runem",
 	"icon": "documentation/asset/lit-plugin@256w.png",
 	"engines": {
