@@ -43,7 +43,7 @@
 		"pretty-quick": "^1.10.0"
 	},
 	"dependencies": {
-		"ts-lit-plugin": "~1.0.0-next.10",
+		"ts-lit-plugin": "~1.0.0-next.11",
 		"lit-html": "https://github.com/mjbvz/vscode-lit-html.git#1.11.0",
 		"vscode-styled-components": "https://github.com/styled-components/vscode-styled-components#f806f23a027e3458e9d77001851b428f1cb992d5"
 	},

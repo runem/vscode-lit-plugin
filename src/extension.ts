@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { join } from "path";
 
 const tsLitPluginId = "ts-lit-plugin";
 const typeScriptExtensionId = "vscode.typescript-language-features";
@@ -146,7 +147,8 @@ function getConfig(): Partial<Config> {
 	const experimental = vscode.workspace.getConfiguration(configurationExperimentalHtmlSection, null);
 	withConfigValue(experimental, "customData", value => {
 		// Merge value from vscode with "lit-plugin.customHtmlData"
-		outConfig.customHtmlData = outConfig.customHtmlData == null ? value : ((Array.isArray(value) ? value : [value]).concat(outConfig.customHtmlData));
+		const filePaths = (Array.isArray(value) ? value : [value]).map(path => typeof path === "string" && !path.startsWith("/") ? join(vscode.workspace.rootPath || process.cwd(), path) : path)
+		outConfig.customHtmlData = outConfig.customHtmlData == null ? filePaths : filePaths.concat(outConfig.customHtmlData);
 	});
 
 	return outConfig;
