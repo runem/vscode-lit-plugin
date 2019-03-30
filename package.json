@@ -3,7 +3,7 @@
 	"private": true,
 	"displayName": "lit-plugin",
 	"description": "Syntax highlighting, type checking and code completion for lit-html",
-	"version": "0.1.3",
+	"version": "1.0.0",
 	"publisher": "runem",
 	"icon": "documentation/asset/lit-plugin@256w.png",
 	"engines": {
@@ -37,13 +37,13 @@
 		"@types/node": "^10.12.24",
 		"tslint": "^5.12.1",
 		"typescript": "3.3.3",
-		"vsce": "^1.57.0",
+		"vsce": "^1.58.0",
 		"vscode": "^1.1.29",
 		"prettier": "^1.16.4",
 		"pretty-quick": "^1.10.0"
 	},
 	"dependencies": {
-		"ts-lit-plugin": "^0.1.8",
+		"ts-lit-plugin": "~1.0.0-next.10",
 		"lit-html": "https://github.com/mjbvz/vscode-lit-html.git#1.11.0",
 		"vscode-styled-components": "https://github.com/styled-components/vscode-styled-components#f806f23a027e3458e9d77001851b428f1cb992d5"
 	},
@@ -70,18 +70,14 @@
 				"id": "lit-plugin",
 				"title": "lit-plugin",
 				"properties": {
-					"lit-plugin.logging": {
-						"type": "string",
-						"description": "Log to a file.",
-						"default": "none",
-						"enum": [
-							"none",
-							"verbose"
-						]
-					},
 					"lit-plugin.disable": {
 						"type": "boolean",
 						"description": "Completely disable this plugin.",
+						"default": false
+					},
+					"lit-plugin.noSuggestions": {
+						"type": "boolean",
+						"description": "Don't append messages suggesting how to fix diagnostics.",
 						"default": false
 					},
 					"lit-plugin.format.disable": {
@@ -112,7 +108,42 @@
 							"css"
 						]
 					},
-					"lit-plugin.globalHtmlTags": {
+					"lit-plugin.checkUnknownEvents": {
+						"type": "boolean",
+						"description": "Check and report usage of unknown events.",
+						"default": false
+					},
+					"lit-plugin.skipUnknownTags": {
+						"type": "boolean",
+						"description": "Skip reporting unknown html tags.",
+						"default": false
+					},
+					"lit-plugin.skipUnknownAttributes": {
+						"type": "boolean",
+						"description": "Skip reporting unknown html attributes.",
+						"default": false
+					},
+					"lit-plugin.skipUnknownProperties": {
+						"type": "boolean",
+						"description": "Skip reporting unknown properties.",
+						"default": false
+					},
+					"lit-plugin.skipUnknownSlots": {
+						"type": "boolean",
+						"description": "Skip reporting unknown slots.",
+						"default": false
+					},
+					"lit-plugin.skipTypeChecking": {
+						"type": "boolean",
+						"description": "Skip type checking of attributes.",
+						"default": false
+					},
+					"lit-plugin.skipMissingImports": {
+						"type": "boolean",
+						"description": "Skip reporting missing imports of custom elements.",
+						"default": false
+					},
+					"lit-plugin.globalTags": {
 						"type": "array",
 						"description": "List of html tag names that you expect to be present at all times.",
 						"items": {
@@ -120,33 +151,250 @@
 							"description": "Tag name."
 						}
 					},
-					"lit-plugin.globalHtmlAttributes": {
+					"lit-plugin.globalAttributes": {
 						"type": "array",
 						"description": "List of html attributes names that you expect to be present at all times. These attributes are not checked at all.",
 						"items": {
 							"type": "string",
-							"description": "Tag name."
+							"description": "Attribute name."
 						}
 					},
-					"lit-plugin.skipMissingImports": {
-						"type": "boolean",
-						"description": "Skip reporting missing imports of custom elements.",
-						"default": false
+					"lit-plugin.globalEvents": {
+						"type": "array",
+						"description": "List of event names that you expect to be present at all times. These events are not checked at all.",
+						"items": {
+							"type": "string",
+							"description": "Event name."
+						}
 					},
-					"lit-plugin.skipUnknownHtmlTags": {
-						"type": "boolean",
-						"description": "Skip reporting unknown html tags.",
-						"default": false
+					"lit-plugin.customHtmlData": {
+						"version": 1,
+						"title": "VS Code HTML Custom Data format",
+						"description": "Format for loading html data in VS Code's HTML custom data format",
+						"type": "object",
+						"required": [
+							"version"
+						],
+						"properties": {
+							"version": {
+								"const": 1,
+								"description": "The custom data version",
+								"type": "number"
+							},
+							"tags": {
+								"description": "Custom HTML tags",
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"name"
+									],
+									"defaultSnippets": [
+										{
+											"body": {
+												"name": "$1",
+												"description": "",
+												"attributes": []
+											}
+										}
+									],
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Name of tag"
+										},
+										"description": {
+											"type": "string",
+											"description": "Description of tag shown in completion and hover"
+										},
+										"attributes": {
+											"type": "array",
+											"description": "A list of possible attributes for the tag",
+											"items": {
+												"type": "object",
+												"required": [
+													"name"
+												],
+												"defaultSnippets": [
+													{
+														"body": {
+															"name": "$1",
+															"description": "",
+															"values": []
+														}
+													}
+												],
+												"properties": {
+													"name": {
+														"type": "string",
+														"description": "Name of attribute"
+													},
+													"description": {
+														"type": "string",
+														"description": "Description of attribute shown in completion and hover"
+													},
+													"valueSet": {
+														"type": "string",
+														"description": "Name of the matching attribute value set"
+													},
+													"values": {
+														"type": "array",
+														"description": "A list of possible values for the attribute",
+														"items": {
+															"type": "object",
+															"required": [
+																"name"
+															],
+															"defaultSnippets": [
+																{
+																	"body": {
+																		"name": "$1",
+																		"description": ""
+																	}
+																}
+															],
+															"properties": {
+																"name": {
+																	"type": "string",
+																	"description": "Name of attribute value"
+																},
+																"description": {
+																	"type": "string",
+																	"description": "Description of attribute value shown in completion and hover"
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							},
+							"globalAttributes": {
+								"description": "Custom HTML global attributes",
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"name"
+									],
+									"defaultSnippets": [
+										{
+											"body": {
+												"name": "$1",
+												"description": "",
+												"values": []
+											}
+										}
+									],
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Name of attribute"
+										},
+										"description": {
+											"type": "string",
+											"description": "Description of attribute shown in completion and hover"
+										},
+										"valueSet": {
+											"type": "string",
+											"description": "Name of the matching attribute value set"
+										},
+										"values": {
+											"type": "array",
+											"description": "A list of possible values for the attribute",
+											"items": {
+												"type": "object",
+												"required": [
+													"name"
+												],
+												"defaultSnippets": [
+													{
+														"body": {
+															"name": "$1",
+															"description": ""
+														}
+													}
+												],
+												"properties": {
+													"name": {
+														"type": "string",
+														"description": "Name of attribute value"
+													},
+													"description": {
+														"type": "string",
+														"description": "Description of attribute value shown in completion and hover"
+													}
+												}
+											}
+										}
+									}
+								}
+							},
+							"valueSets": {
+								"description": "A set of attribute value. When an attribute refers to an attribute set, its value completion will use valuse from that set",
+								"type": "array",
+								"items": {
+									"type": "object",
+									"required": [
+										"name"
+									],
+									"defaultSnippets": [
+										{
+											"body": {
+												"name": "$1",
+												"description": "",
+												"values": []
+											}
+										}
+									],
+									"properties": {
+										"name": {
+											"type": "string",
+											"description": "Name of attribute value in value set"
+										},
+										"values": {
+											"type": "array",
+											"description": "A list of possible values for the attribute",
+											"items": {
+												"type": "object",
+												"required": [
+													"name"
+												],
+												"defaultSnippets": [
+													{
+														"body": {
+															"name": "$1",
+															"description": ""
+														}
+													}
+												],
+												"properties": {
+													"name": {
+														"type": "string",
+														"description": "Name of attribute value"
+													},
+													"description": {
+														"type": "string",
+														"description": "Description of attribute value shown in completion and hover"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					},
-					"lit-plugin.skipUnknownHtmlAttributes": {
-						"type": "boolean",
-						"description": "Skip reporting unknown html attributes.",
-						"default": false
-					},
-					"lit-plugin.skipTypeChecking": {
-						"type": "boolean",
-						"description": "Skip type checking of attributes.",
-						"default": false
+					"lit-plugin.logging": {
+						"type": "string",
+						"description": "Log to a file.",
+						"default": "none",
+						"enum": [
+							"none",
+							"verbose"
+						]
 					}
 				}
 			}

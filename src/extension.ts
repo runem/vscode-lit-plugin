@@ -3,19 +3,30 @@ import * as vscode from "vscode";
 const tsLitPluginId = "ts-lit-plugin";
 const typeScriptExtensionId = "vscode.typescript-language-features";
 const configurationSection = "lit-plugin";
+const configurationExperimentalHtmlSection = "html.experimental";
 
 interface Config {
 	disable: boolean;
 	verbose: boolean;
 	format: { disable: boolean };
+	noSuggestions: boolean;
+
 	htmlTemplateTags: string[];
 	cssTemplateTags: string[];
-	globalHtmlTags: string[];
-	globalHtmlAttributes: string[];
-	skipMissingImports: boolean;
-	skipUnknownHtmlTags: boolean;
-	skipUnknownHtmlAttributes: boolean;
+
+	checkUnknownEvents: boolean;
+
+	skipUnknownTags: boolean;
+	skipUnknownAttributes: boolean;
+	skipUnknownProperties: boolean;
+	skipUnknownSlots: boolean;
 	skipTypeChecking: boolean;
+	skipMissingImports: boolean;
+
+	globalTags: string[];
+	globalAttributes: string[];
+	globalEvents: string[];
+	customHtmlData: (string | Object)[] | string | Object;
 }
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -36,7 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.workspace.onDidChangeConfiguration(
 		e => {
-			if (e.affectsConfiguration(configurationSection)) {
+			if (e.affectsConfiguration(configurationSection) || e.affectsConfiguration(configurationExperimentalHtmlSection)) {
 				synchronizeConfig(api);
 			}
 		},
@@ -55,6 +66,18 @@ function getConfig(): Partial<Config> {
 	const config = vscode.workspace.getConfiguration(configurationSection);
 	const outConfig: Partial<Config> = {};
 
+	// Deprecated values
+	withConfigValue(config, "externalHtmlTagNames", value => {
+		outConfig.globalTags = value;
+	});
+	withConfigValue(config, "externalHtmlTags", value => {
+		outConfig.globalTags = value;
+	});
+	withConfigValue(config, "externalHtmlAttributes", value => {
+		outConfig.globalAttributes = value;
+	});
+
+	// Values
 	withConfigValue(config, "disable", value => {
 		outConfig.disable = value;
 	});
@@ -67,33 +90,63 @@ function getConfig(): Partial<Config> {
 	withConfigValue(config, "format.disable", value => {
 		outConfig.format = Object.assign(outConfig.format || {}, { disable: value });
 	});
+	withConfigValue(config, "noSuggestions", value => {
+		outConfig.noSuggestions = value;
+	});
+
+	// Template tags
 	withConfigValue(config, "htmlTemplateTags", value => {
 		outConfig.htmlTemplateTags = value;
 	});
 	withConfigValue(config, "cssTemplateTags", value => {
 		outConfig.cssTemplateTags = value;
 	});
-	withConfigValue(config, "globalHtmlAttributes", value => {
-		outConfig.globalHtmlAttributes = value;
+
+	// Global
+	withConfigValue(config, "globalEvents", value => {
+		outConfig.globalEvents = value;
 	});
-	// "externalHtmlTagNames" is deprecated, but keep it for now
-	withConfigValue(config, "externalHtmlTagNames", value => {
-		outConfig.globalHtmlTags = value;
+	withConfigValue(config, "globalAttributes", value => {
+		outConfig.globalAttributes = value;
 	});
-	withConfigValue(config, "globalHtmlTags", value => {
-		outConfig.globalHtmlTags = value;
+	withConfigValue(config, "globalTags", value => {
+		outConfig.globalTags = value;
+	});
+
+	// Check
+	withConfigValue(config, "checkUnknownEvents", value => {
+		outConfig.checkUnknownEvents = value;
+	});
+
+
+	// Skip
+	withConfigValue(config, "skipUnknownTags", value => {
+		outConfig.skipUnknownTags = value;
+	});
+	withConfigValue(config, "skipUnknownAttributes", value => {
+		outConfig.skipUnknownAttributes = value;
+	});
+	withConfigValue(config, "skipUnknownProperties", value => {
+		outConfig.skipUnknownProperties = value;
+	});
+	withConfigValue(config, "skipUnknownSlots", value => {
+		outConfig.skipUnknownSlots = value;
 	});
 	withConfigValue(config, "skipMissingImports", value => {
 		outConfig.skipMissingImports = value;
 	});
-	withConfigValue(config, "skipUnknownHtmlTags", value => {
-		outConfig.skipUnknownHtmlTags = value;
-	});
-	withConfigValue(config, "skipUnknownHtmlAttributes", value => {
-		outConfig.skipUnknownHtmlAttributes = value;
-	});
 	withConfigValue(config, "skipTypeChecking", value => {
 		outConfig.skipTypeChecking = value;
+	});
+	withConfigValue(config, "customHtmlData", value => {
+		outConfig.customHtmlData = value;
+	});
+
+	// Experimental values from vscode
+	const experimental = vscode.workspace.getConfiguration(configurationExperimentalHtmlSection, null);
+	withConfigValue(experimental, "customData", value => {
+		// Merge value from vscode with "lit-plugin.customHtmlData"
+		outConfig.customHtmlData = outConfig.customHtmlData == null ? value : ((Array.isArray(value) ? value : [value]).concat(outConfig.customHtmlData));
 	});
 
 	return outConfig;
