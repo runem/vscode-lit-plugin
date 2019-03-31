@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
 import { join } from "path";
+import * as vscode from "vscode";
 
 const tsLitPluginId = "ts-lit-plugin";
 const typeScriptExtensionId = "vscode.typescript-language-features";
@@ -86,7 +86,9 @@ function getConfig(): Partial<Config> {
 		outConfig.verbose = value;
 	});
 	withConfigValue(config, "logging", value => {
-		if (value === "verbose") outConfig.verbose = true;
+		if (value === "verbose") {
+			outConfig.verbose = true;
+		}
 	});
 	withConfigValue(config, "format.disable", value => {
 		outConfig.format = Object.assign(outConfig.format || {}, { disable: value });
@@ -119,7 +121,6 @@ function getConfig(): Partial<Config> {
 		outConfig.checkUnknownEvents = value;
 	});
 
-
 	// Skip
 	withConfigValue(config, "skipUnknownTags", value => {
 		outConfig.skipUnknownTags = value;
@@ -147,7 +148,7 @@ function getConfig(): Partial<Config> {
 	const experimental = vscode.workspace.getConfiguration(configurationExperimentalHtmlSection, null);
 	withConfigValue(experimental, "customData", value => {
 		// Merge value from vscode with "lit-plugin.customHtmlData"
-		const filePaths = (Array.isArray(value) ? value : [value]).map(path => typeof path === "string" && !path.startsWith("/") ? join(vscode.workspace.rootPath || process.cwd(), path) : path)
+		const filePaths = (Array.isArray(value) ? value : [value]).map(path => (typeof path === "string" ? toWorkspacePath(path) : path));
 		outConfig.customHtmlData = outConfig.customHtmlData == null ? filePaths : filePaths.concat(outConfig.customHtmlData);
 	});
 
@@ -171,4 +172,17 @@ function withConfigValue(config: vscode.WorkspaceConfiguration, key: string, wit
 	if (typeof value !== "undefined") {
 		withValue(value);
 	}
+}
+
+function toWorkspacePath(path: string): string {
+	if (path.startsWith("/")) {
+		return path;
+	}
+
+	const folder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
+	if (folder != null) {
+		return join(folder.uri.path, path);
+	}
+
+	return join(process.cwd(), path);
 }
