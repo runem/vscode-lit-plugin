@@ -43,7 +43,7 @@
 		"pretty-quick": "^1.10.0"
 	},
 	"dependencies": {
-		"ts-lit-plugin": "1.0.1",
+		"ts-lit-plugin": "1.0.3",
 		"lit-html": "https://github.com/mjbvz/vscode-lit-html.git#1.11.0",
 		"vscode-styled-components": "https://github.com/styled-components/vscode-styled-components#f806f23a027e3458e9d77001851b428f1cb992d5"
 	},
@@ -73,11 +73,6 @@
 					"lit-plugin.disable": {
 						"type": "boolean",
 						"description": "Completely disable this plugin.",
-						"default": false
-					},
-					"lit-plugin.noSuggestions": {
-						"type": "boolean",
-						"description": "Don't append messages suggesting how to fix diagnostics.",
 						"default": false
 					},
 					"lit-plugin.format.disable": {
@@ -111,6 +106,11 @@
 					"lit-plugin.checkUnknownEvents": {
 						"type": "boolean",
 						"description": "Check and report usage of unknown events.",
+						"default": false
+					},
+					"lit-plugin.skipSuggestions": {
+						"type": "boolean",
+						"description": "Don't append messages suggesting how to fix diagnostics.",
 						"default": false
 					},
 					"lit-plugin.skipUnknownTags": {

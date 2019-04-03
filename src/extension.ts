@@ -9,8 +9,8 @@ const configurationExperimentalHtmlSection = "html.experimental";
 interface Config {
 	disable: boolean;
 	verbose: boolean;
+	cwd: string;
 	format: { disable: boolean };
-	noSuggestions: boolean;
 
 	htmlTemplateTags: string[];
 	cssTemplateTags: string[];
@@ -18,6 +18,7 @@ interface Config {
 	checkUnknownEvents: boolean;
 
 	skipUnknownTags: boolean;
+	skipSuggestions: boolean;
 	skipUnknownAttributes: boolean;
 	skipUnknownProperties: boolean;
 	skipUnknownSlots: boolean;
@@ -67,6 +68,11 @@ function getConfig(): Partial<Config> {
 	const config = vscode.workspace.getConfiguration(configurationSection);
 	const outConfig: Partial<Config> = {};
 
+	// Set cwd
+	outConfig.cwd = getCwd();
+
+	console.log(getCwd());
+
 	// Deprecated values
 	withConfigValue(config, "externalHtmlTagNames", value => {
 		outConfig.globalTags = value;
@@ -93,8 +99,8 @@ function getConfig(): Partial<Config> {
 	withConfigValue(config, "format.disable", value => {
 		outConfig.format = Object.assign(outConfig.format || {}, { disable: value });
 	});
-	withConfigValue(config, "noSuggestions", value => {
-		outConfig.noSuggestions = value;
+	withConfigValue(config, "skipSuggestions", value => {
+		outConfig.skipSuggestions = value;
 	});
 
 	// Template tags
@@ -179,10 +185,10 @@ function toWorkspacePath(path: string): string {
 		return path;
 	}
 
-	const folder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
-	if (folder != null) {
-		return join(folder.uri.path, path);
-	}
+	return join(getCwd(), path);
+}
 
-	return join(process.cwd(), path);
+function getCwd(): string {
+	const folder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
+	return (folder && folder.uri.path) || process.cwd();
 }

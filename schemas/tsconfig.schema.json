@@ -28,11 +28,6 @@
 									"description": "Completely disable this plugin.",
 									"default": false
 								},
-								"noSuggestions": {
-									"type": "boolean",
-									"description": "Don't append messages suggesting how to fix diagnostics.",
-									"default": false
-								},
 								"format": {
 									"properties": {
 										"disable": {
@@ -68,6 +63,11 @@
 								"checkUnknownEvents": {
 									"type": "boolean",
 									"description": "Check and report usage of unknown events.",
+									"default": false
+								},
+								"skipSuggestions": {
+									"type": "boolean",
+									"description": "Don't append messages suggesting how to fix diagnostics.",
 									"default": false
 								},
 								"skipUnknownTags": {
