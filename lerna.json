@@ -1,0 +1,13 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "nohoist": [
+        "vscode"
+      ]
+    }
+  },
+  "version": "0.0.0"
+}

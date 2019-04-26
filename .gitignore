@@ -1,6 +1,11 @@
 .DS_Store
 out
+dist
+lib
 node_modules
-.vscode-test/
 *.vsix
 .idea
+*.txt
+*.js
+*.tgz
+*.log
