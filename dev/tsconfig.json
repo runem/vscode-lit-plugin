@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"plugins": [
+		/*"plugins": [
 			{
 				"name": "ts-lit-plugin",
 				"verbose": true,
@@ -42,7 +42,7 @@
 					]
 				}
 			}
-		],
+		],*/
 		"experimentalDecorators": true,
 		"target": "es5",
 		"module": "commonjs",

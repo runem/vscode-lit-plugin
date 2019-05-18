@@ -5,6 +5,9 @@ import { classMap } from "lit-html/directives/class-map";
 import { styleMap } from "lit-html/directives/style-map";
 import { guard } from "lit-html/directives/guard";
 import { Button } from "@material/mwc-button";
+import { directive, Part } from "lit-html";
+
+export const mediaPath = directive((key) => (part: Part) => part.setValue(key));
 
 /**
  * hfhhdf

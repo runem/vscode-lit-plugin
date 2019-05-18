@@ -5,6 +5,9 @@ const tsLitPluginId = "ts-lit-plugin";
 const typeScriptExtensionId = "vscode.typescript-language-features";
 const configurationSection = "lit-plugin";
 const configurationExperimentalHtmlSection = "html.experimental";
+const analyzeCommandId = "lit-plugin.analyze";
+
+let defaultAnalyzeGlob = "src";
 
 interface Config {
 	disable: boolean;
@@ -31,6 +34,7 @@ interface Config {
 	customHtmlData: (string | Object)[] | string | Object;
 }
 
+
 export async function activate(context: vscode.ExtensionContext) {
 	const extension = vscode.extensions.getExtension(typeScriptExtensionId);
 	if (!extension) {
@@ -47,6 +51,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		return;
 	}
 
+	// Subscribe to configuration change
 	vscode.workspace.onDidChangeConfiguration(
 		e => {
 			if (e.affectsConfiguration(configurationSection) || e.affectsConfiguration(configurationExperimentalHtmlSection)) {
@@ -56,6 +61,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		undefined,
 		context.subscriptions
 	);
+
+	// Subscribe to the analyze command
+	context.subscriptions.push(vscode.commands.registerCommand(analyzeCommandId, handleAnalyzeCommand));
 
 	synchronizeConfig(api);
 }
@@ -70,8 +78,6 @@ function getConfig(): Partial<Config> {
 
 	// Set cwd
 	outConfig.cwd = getCwd();
-
-	console.log(getCwd());
 
 	// Deprecated values
 	withConfigValue(config, "externalHtmlTagNames", value => {
@@ -191,4 +197,23 @@ function toWorkspacePath(path: string): string {
 function getCwd(): string {
 	const folder = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0];
 	return (folder && folder.uri.path) || process.cwd();
+}
+
+function handleAnalyzeCommand() {
+	vscode.window
+		.showInputBox({
+			value: defaultAnalyzeGlob,
+			prompt: "Please enter a directory/path/glob to analyze",
+			placeHolder: "directory/path/glob"
+		})
+		.then(glob => {
+			if (glob == null) return;
+
+			defaultAnalyzeGlob = glob;
+
+			const cliCommand = `npx lit-analyzer "${glob}"`;
+			const terminal = vscode.window.createTerminal("lit-analyzer");
+			terminal.sendText(cliCommand, true);
+			terminal.show(true);
+		});
 }

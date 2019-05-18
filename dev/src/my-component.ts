@@ -1,4 +1,4 @@
-import { customElement, LitElement, property } from "lit-element";
+import {css,  customElement, LitElement, property } from "lit-element";
 import "./my-button";
 
 /**
@@ -14,7 +14,16 @@ export class MyTest extends LitElement {
 
 	myProp2: string = "bar";
 
-	@property({ type: Number }) bar!: number;
+	@property() myProp3?: string = "bar";
+
+	@property() bar!: number;
+
+	static get styles () {
+		return css`
+		a::part() {
+		}
+		`; 
+	}
 
 	static get properties() {
 		return {
