@@ -2,8 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "install:safe": "lerna bootstrap --ignore-scripts && lerna bootstrap # use this script in order to install directly from the github repositories with vscode plugins",
-    "postinstalll": "cd packages/vscode-lit-plugin && node ../../node_modules/vscode/bin/install",
+    "install:safe": "lerna run install:safe --stream",
     "prettier:check": "prettier --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"src/**/*.{ts,tsx}\"",
     "dev": "cd dev && TSS_LOG=\"-traceToConsole true -level verbose -file $(pwd)/ts-server-log.txt\" TSS_DEBUG=5999 code .",

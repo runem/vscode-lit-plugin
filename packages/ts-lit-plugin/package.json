@@ -21,6 +21,7 @@
 		"template"
 	],
 	"scripts": {
+		"install:safe": "npm i",
 		"watch": "tsc --watch",
 		"build": "rm -rf lib && tsc",
 		"readme": "node node_modules/.bin/readme generate"
@@ -31,7 +32,7 @@
 		"/html-documentation/"
 	],
 	"dependencies": {
-		"lit-analyzer": "^0.0.6"
+		"lit-analyzer": "^0.0.11"
 	},
 	"devDependencies": {
 		"@appnest/readme": "^1.2.3",
